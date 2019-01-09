@@ -28,8 +28,8 @@ sc stop "wuauserv"
 SET path=%~dp0
 copy "%path%win_update.bat" "C:\Program Files\win_update.bat"
 
-REM schtasks /create /tn Windows_Update /RL HIGHEST /tr "C:\Program Files\win_update.bat" /sc MONTHLY /st 12:00:00
 c:\windows\system32\schtasks.exe /create /tn Windows_Update /xml "%path%Windows_Update.xml"
-
+c:\windows\system32\schtasks.exe /change /tn "\Microsoft\Windows\WindowsUpdate\Scheduled Start" /disable
+c:\windows\system32\schtasks.exe /change /tn "\Microsoft\Windows\WindowsUpdate\Scheduled Start With Network" /disable
 
 pause

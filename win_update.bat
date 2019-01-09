@@ -1,3 +1,4 @@
+@echo off
 goto comment
 
 win_update.bat
@@ -17,7 +18,6 @@ Copyright 2018 Matthew S. Kesselring
    limitations under the License.
 
 :comment
-@echo off
 
 :ASK
 set /p answer=Run Windows Update (Y/N)?:
@@ -29,9 +29,12 @@ goto ASK
 echo Running Windows update
 sc config "wuauserv" start= demand
 sc start "wuauserv"
-sc config "wuauserv" start= disabled
 goto CONT
 :NO
 echo Cancelled Windows update
+sc stop "wuauserv"
 
 :CONT
+sc config "wuauserv" start= disabled
+c:\windows\system32\schtasks.exe /change /tn "\Microsoft\Windows\WindowsUpdate\Scheduled Start" /disable
+c:\windows\system32\schtasks.exe /change /tn "\Microsoft\Windows\WindowsUpdate\Scheduled Start With Network" /disable
